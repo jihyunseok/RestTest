@@ -1,4 +1,4 @@
-package com.example.resttest;
+package src.example.activity;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

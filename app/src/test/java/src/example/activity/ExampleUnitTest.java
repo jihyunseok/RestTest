@@ -1,4 +1,4 @@
-package com.example.resttest;
+package src.example.activity;
 
 import org.junit.Test;
 
