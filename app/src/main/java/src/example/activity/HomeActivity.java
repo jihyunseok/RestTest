@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.example.resttest.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -20,7 +21,6 @@ import src.example.activity.adapter.HomeClassListAdapter;
 import src.example.service.ApiUtils;
 import src.example.service.HomeService;
 import src.example.vo.HomeClassListVO;
-import src.example.vo.LoginVO;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 HomeClassListVO item = (HomeClassListVO) adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "選択 : " + item.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "選択 : " + item.getClassName(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -67,35 +67,32 @@ public class HomeActivity extends AppCompatActivity {
 
     private void getHomeData() {
 
-        homeService.getData2("1").enqueue(new Callback<List<LoginVO>>(){
+//        HomeClassListVO classinfo = new HomeClassListVO();
+//        classinfo.setClassId(3);
+
+        HashMap<String, Object> classinfo = new HashMap<>();
+
+        homeService.getClassList(classinfo).enqueue(new Callback<List<HomeClassListVO>>(){
             @Override
-            public void onResponse(@NonNull Call<List<LoginVO>> call, @NonNull Response<List<LoginVO>> response) {
+            public void onResponse(@NonNull Call<List<HomeClassListVO>> call, @NonNull Response<List<HomeClassListVO>> response) {
                 if (response.isSuccessful()) {
-                    List<LoginVO> datas = response.body();
+                    List<HomeClassListVO> datas = response.body();
                     if (datas != null) {
+                        adapter = new HomeClassListAdapter();
                         for (int i = 0; i < datas.size(); i++) {
-                            Log.e("data" + i, datas.get(i).getUserId() + "");
+                            adapter.addItem(new HomeClassListVO(datas.get(i).getClassName(), datas.get(i).getClassInfo(), datas.get(i).getStudyCost(), R.drawable.singer));
+                            Log.d("data" + i, datas.get(i).getClassName() + "");
                         }
-                        Log.e("getData2 end", "======================================");
+                        listView.setAdapter(adapter);
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<LoginVO>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<HomeClassListVO>> call, @NonNull Throwable t) {
                 showErrorMessage();
             }
         });
-
-        adapter = new HomeClassListAdapter();
-
-        adapter.addItem(new HomeClassListVO("和食", "0９0-1000-1000", 20, R.drawable.singer));
-        adapter.addItem(new HomeClassListVO("洋食", "080-2000-2000", 22, R.drawable.singer2));
-        adapter.addItem(new HomeClassListVO("デザート", "070-3000-3000", 21, R.drawable.singer3));
-        adapter.addItem(new HomeClassListVO("中華", "090-4000-4000", 24, R.drawable.singer4));
-        adapter.addItem(new HomeClassListVO("フレンチ", "080-5000-5000", 25, R.drawable.singer5));
-
-        listView.setAdapter(adapter);
 
     }
 

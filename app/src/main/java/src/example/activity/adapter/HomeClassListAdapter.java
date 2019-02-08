@@ -40,10 +40,10 @@ public class HomeClassListAdapter extends BaseAdapter {
         HomeClassListView view = new HomeClassListView(context);
 
         HomeClassListVO item = items.get(position);
-        view.setName(item.getName());
-        view.setMobile(item.getMobile());
-        view.setAge(item.getAge());
-        view.setImage(item.getResId());
+        view.setClassName(item.getClassName());
+        view.setClassInfo(item.getClassInfo());
+        view.setStudyCost(item.getStudyCost());
+        view.setClassId(item.getClassId());
 
         return view;
     }

@@ -1,49 +1,57 @@
 package src.example.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class HomeClassListVO {
 
-    String name;
-    String mobile;
-    int age;
-    int resId;
+    @SerializedName("class_name")
+    String className;
+    @SerializedName("class_info")
+    String classInfo;
+    @SerializedName("study_cost")
+    int studyCost;
+    @SerializedName("class_id")
+    int classId;
 
-    public HomeClassListVO(String name, String mobile, int age, int resId) {
-        this.name = name;
-        this.mobile = mobile;
-        this.age = age;
-        this.resId = resId;
+    public HomeClassListVO(){};
+
+    public HomeClassListVO(String className, String classInfo, int studyCost, int classId) {
+        this.className = className;
+        this.classInfo = classInfo;
+        this.studyCost = studyCost;
+        this.classId = classId;
     }
 
-    public int getAge() {
-        return age;
+    public int getStudyCost() {
+        return studyCost;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setStudyCost(int studyCost) {
+        this.studyCost = studyCost;
     }
 
-    public int getResId() {
-        return resId;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setResId(int resId) {
-        this.resId = resId;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getClassInfo() {
+        return classInfo;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setClassInfo(String classInfo) {
+        this.classInfo = classInfo;
     }
 
-    public String getName() {
-        return name;
+    public String getClassName() {
+        return className;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
 }

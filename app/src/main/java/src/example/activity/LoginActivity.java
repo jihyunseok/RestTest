@@ -12,12 +12,11 @@ import android.widget.Toast;
 
 import com.example.resttest.R;
 
-import java.util.List;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import src.example.vo.LoginVO;
 import src.example.service.ApiUtils;
 import src.example.service.LoginService;
 
@@ -50,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         Log.d("클릭한 버튼 아이디 = ",String.valueOf(view.getId()));
         switch(view.getId()){
             case R.id.login :
-                loginMock();
+                login();
                 break;
             case R.id.back :
                 Toast.makeText(this, "back button", Toast.LENGTH_SHORT).show();
@@ -61,70 +60,42 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     }
 
     public void login(){
-        loginService.getData("1").enqueue(new Callback<LoginVO>() {
-            @Override
-            public void onResponse(@NonNull Call<LoginVO> call, @NonNull Response<LoginVO> response) {
-                if (response.isSuccessful()) {
-                    LoginVO body = response.body();
-                    if (body != null) {
-                        Log.d("data.getUserId()", body.getUserId() + "");
-                        Log.d("data.getId()", body.getId() + "");
-                        Log.d("data.getTitle()", body.getTitle());
-                        Log.d("data.getBody()", body.getBody());
-                        Log.e("getData end", "======================================");
-                        Toast.makeText(LoginActivity.this, body.getTitle(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<LoginVO> call, @NonNull Throwable t) {
-                showErrorMessage();
-            }
-        });
-
-    }
-
-    public void login2(){
-        loginService.getData2("1").enqueue(new Callback<List<LoginVO>>(){
-            @Override
-            public void onResponse(@NonNull Call<List<LoginVO>> call, @NonNull Response<List<LoginVO>> response) {
-                if (response.isSuccessful()) {
-                    List<LoginVO> datas = response.body();
-                    if (datas != null) {
-                        for (int i = 0; i < datas.size(); i++) {
-                            Log.e("data" + i, datas.get(i).getUserId() + "");
-                        }
-                        Log.e("getData2 end", "======================================");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<LoginVO>> call, @NonNull Throwable t) {
-                showErrorMessage();
-            }
-        });
-    }
-
-    public void loginMock(){
 
         checkValue();
 
-        if( !user_id.getText().toString().equals("hyunseok")) {
-            Toast.makeText(this, "idが存在しません。", Toast.LENGTH_SHORT).show();
-            user_id.requestFocus();
-            return;
-        }
+        HashMap<String, Object> logininfo = new HashMap();
+        logininfo.put("user_id",user_id.getText().toString());
+        logininfo.put("password",password.getText().toString());
 
-        if( !password.getText().toString().equals("hyunseok")) {
-            Toast.makeText(this, "パスワードが間違っています。!", Toast.LENGTH_SHORT).show();
-            password.requestFocus();
-            return;
-        }
+        loginService.login(logininfo).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if (response.isSuccessful()) {
+                    String body = response.body();
+                    if (body != null) {
+                        Log.d("body", body);
+                        switch (body) {
+                            case "0": //ログイン成功
+                                Intent goHome = new Intent(getApplicationContext(),HomeActivity.class);
+                                startActivity(goHome);
+                                break;
+                            case "1": //ログイン失敗
+                                Toast.makeText(getApplicationContext(), "パスワードが間違っています。!", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "2":
+                                Toast.makeText(getApplicationContext(), "idが存在しません。", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }
+            }
 
-        Intent goHome = new Intent(getApplicationContext(),HomeActivity.class);
-        startActivity(goHome);
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                showErrorMessage();
+            }
+        });
+
     }
 
     public void checkValue(){

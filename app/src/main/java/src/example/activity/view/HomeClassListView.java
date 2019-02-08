@@ -37,19 +37,19 @@ public class HomeClassListView extends LinearLayout {
         imageView = (ImageView) findViewById(R.id.imageView);
     }
 
-    public void setName(String name) {
-        textView.setText(name);
+    public void setClassName(String className) {
+        textView.setText(className);
     }
 
-    public void setMobile(String mobile) {
-        textView2.setText(mobile);
+    public void setClassInfo(String classInfo) {
+        textView2.setText(classInfo);
     }
 
-    public void setAge(int age) {
-        textView3.setText(String.valueOf(age));
+    public void setStudyCost(int studyCost) {
+        textView3.setText(String.valueOf(studyCost));
     }
 
-    public void setImage(int resId) {
-        imageView.setImageResource(resId);
+    public void setClassId(int classId) {
+        imageView.setImageResource(classId);
     }
 }

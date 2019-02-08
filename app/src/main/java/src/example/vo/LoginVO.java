@@ -2,33 +2,21 @@ package src.example.vo;
 
 public class LoginVO {
 
-    private final int userId;
-    private final int id;
-    private final String title;
-    private final String body;
+    private final String userId;
+    private final String password;
 
-    public LoginVO(int userId, int id, String title, String body) {
+
+    public LoginVO(String userId, String password) {
         this.userId = userId;
-        this.id = id;
-        this.title = title;
-        this.body = body;
+        this.password = password;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public int getId() {
-        return id;
+    public String getPassword() {
+        return password;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
 
 }
